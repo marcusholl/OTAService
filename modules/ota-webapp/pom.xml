@@ -12,6 +12,7 @@
 	<artifactId>com.sap.prd.mobile.ios.ota.webapp</artifactId>
 	<packaging>war</packaging>
 	<name>Over-the-air deployment webapp</name>
+    <description>The web-app performs the Plist rewriting so that the over the air deployment works where ever the web-app gets deployed</description>
     
 	<dependencies>
 		<dependency>
@@ -33,43 +34,11 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<build>
+	
+    <build>
 		<finalName>ota-service</finalName>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-source-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-			</plugins>
-		</pluginManagement>
 	</build>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<version>1.1</version>
-			</plugin>
-		</plugins>
-	</reporting>
+
 	
 </project>

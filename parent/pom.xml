@@ -1,66 +1,153 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
     <groupId>com.sap.prd.mobile.ios.ota</groupId>
-    <artifactId>component</artifactId>
+    <artifactId>parent</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <relativePath>..</relativePath>
-  </parent>
+    <packaging>pom</packaging>
+    <name>OTA Parent POM</name>
+    <description>The parent POM of all OTA service submodules</description>
 
-  <artifactId>parent</artifactId>
-  <packaging>pom</packaging>
-  <name>Parent POM</name>
-    
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <url>https://github.com/sap-production/OTAService</url>
+    <inceptionYear>2012</inceptionYear>
+    <organization>
+        <name>SAP AG</name>
+    </organization>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Irina Kirilova</name>
+            <email>irina.kirilova@sap.com</email>
+        </developer>
+        <developer>
+            <name>Marcus Holl</name>
+            <email>marcus.holl@sap.com</email>
+        </developer>
+        <developer>
+            <name>Alexander Link</name>
+            <email>alexander.link@sap.com</email>
+        </developer>
+    </developers>
 
-  
- <dependencyManagement>
-  <dependencies>
-      <dependency>
-          <groupId>com.sap.prd.mobile.ios.ota</groupId>
-          <artifactId>com.sap.prd.mobile.ios.ota.library</artifactId>
-          <version>1.0.1-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-          <groupId>org.sonatype.plexus</groupId>
-          <artifactId>plexus-cipher</artifactId>
-          <version>1.7</version>
-      </dependency>
-      <dependency>
-          <groupId>org.apache.velocity</groupId>
-          <artifactId>velocity</artifactId>
-          <version>1.7</version>
-      </dependency>
-      <dependency>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
-          <version>3.0.1</version>
-      </dependency>
-      
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>4.8.1</version>
-          <scope>test</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.mockito</groupId>
-          <artifactId>mockito-core</artifactId>
-          <version>1.9.0</version>
-          <scope>test</scope>
-      </dependency>
-            
-  </dependencies>
- </dependencyManagement>
+    <mailingLists>
+        <mailingList>
+            <name>User List</name>
+            <subscribe>maven4ios-request@freelists.org?subject=subscribe</subscribe>
+            <unsubscribe>maven4ios-request@freelists.org?subject=unsubscribe</unsubscribe>
+            <post>maven4ios@freelists.org</post>
+            <archive>http://www.freelists.org/archive/maven4ios/</archive>
+        </mailingList>
+    </mailingLists>
 
-  
+    <scm>
+        <connection>scm:git:https://github.com/sap-production/OTAService.git</connection>
+        <developerConnection>scm:git:https://github.com/sap-production/OTAService.git</developerConnection>
+        <url>https://github.com/sap-production/OTAService</url>
+    </scm>
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/sap-production/OTAService/issues</url>
+    </issueManagement>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.sap.prd.mobile.ios.ota</groupId>
+                <artifactId>com.sap.prd.mobile.ios.ota.library</artifactId>
+                <version>1.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sonatype.plexus</groupId>
+                <artifactId>plexus-cipher</artifactId>
+                <version>1.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>1.7</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.8.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>1.9.0</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <licenseName>apache_v2</licenseName>
+                    <extraExtensions>
+                        <m>java</m> <!-- *.m files are objective C source files and have the same comment structure 
+                            as Java -->
+                    </extraExtensions>
+                </configuration>
+            </plugin>
+        </plugins>
+
         <!-- define the plugin version to be used in the submodules here -->
         <pluginManagement>
             <plugins>
@@ -76,11 +163,25 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.8.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
-    </build>    
+    </build>
     
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.1</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
