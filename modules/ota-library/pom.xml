@@ -12,6 +12,7 @@
 	<artifactId>com.sap.prd.mobile.ios.ota.library</artifactId>
 	<packaging>jar</packaging>
 	<name>Over-the-air deployment library</name>
+    <description>This library can be used to create OTA HTML pages</description>
     
 	<dependencies>
 		<dependency>
@@ -29,39 +30,5 @@
         </dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
-    
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<version>1.1</version>
-			</plugin>
-		</plugins>
-	</reporting>
 	
 </project>

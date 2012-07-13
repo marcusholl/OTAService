@@ -23,20 +23,6 @@
       </license>
   </licenses>
 
-  <build>
-    <plugins>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>license-maven-plugin</artifactId>
-            <configuration>
-                <licenseName>apache_v2</licenseName>
-                <extraExtensions>
-                    <m>java</m> <!-- objective C source files -->
-                </extraExtensions>
-            </configuration>
-        </plugin>
-    </plugins>
-  </build>    
 
   <modules>
     <module>modules/ota-library</module>
