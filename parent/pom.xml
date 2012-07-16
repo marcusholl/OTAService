@@ -5,7 +5,7 @@
 
     <groupId>com.sap.prd.mobile.ios.ota</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
     <name>OTA Parent POM</name>
     <description>The parent POM of all OTA service submodules</description>
@@ -68,7 +68,7 @@
             <dependency>
                 <groupId>com.sap.prd.mobile.ios.ota</groupId>
                 <artifactId>com.sap.prd.mobile.ios.ota.library</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.sonatype.plexus</groupId>
