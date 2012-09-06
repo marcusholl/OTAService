@@ -78,7 +78,7 @@ public class OtaHtmlService extends HttpServlet
 
       PrintWriter writer = response.getWriter();
       OtaHtmlGenerator.getInstance().generate(writer,
-            new Parameters(originalReferer, request.getParameter(TITLE), plistUrl,
+            new Parameters(originalReferer, request.getParameter(TITLE), request.getParameter(BUNDLE_IDENTIFIER), plistUrl,
                   request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER)));
       writer.flush();
       writer.close();

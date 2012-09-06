@@ -19,7 +19,12 @@
  */
 package com.sap.prd.mobile.ios.ota.lib;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TestUtils
 {
@@ -29,6 +34,15 @@ public class TestUtils
     if (!value.contains(expected)) {
       fail(String.format("Expected is contained: '%s' but was '%s'", expected, value));
     }
+  }
+  
+  public static void assertOtaLink(CharSequence s, String plistURL, String bundleIdentifier)
+  {
+    Pattern checkOtaLinkPattern = Pattern.compile("<a href='itms-services:///\\?action=download-manifest&url=([^']+)' onClick=\"_gaq\\.push\\(\\['_trackEvent', 'OTA', 'OTA', '([^']*)'\\]\\);\">Install Over-The-Air</a>");
+    Matcher checkOtaLinkMatcher = checkOtaLinkPattern.matcher(s);
+    assertTrue("Ota link not found", checkOtaLinkMatcher.find());
+    assertEquals(plistURL, checkOtaLinkMatcher.group(1));
+    assertEquals(bundleIdentifier, checkOtaLinkMatcher.group(2));
   }
 
 }

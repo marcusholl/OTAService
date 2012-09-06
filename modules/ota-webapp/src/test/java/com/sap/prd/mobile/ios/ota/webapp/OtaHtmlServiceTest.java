@@ -44,6 +44,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator;
+import com.sap.prd.mobile.ios.ota.lib.TestUtils;
 import com.sap.prd.mobile.ios.ota.webapp.OtaHtmlService;
 
 public class OtaHtmlServiceTest
@@ -113,7 +114,7 @@ public class OtaHtmlServiceTest
     String result = writer.getBuffer().toString();
     assertContains(CHECK_TITLE, result);
     assertContains(TEST_IPA_LINK, result);
-    assertContains(TEST_OTA_LINK, result);
+    TestUtils.assertOtaLink(result, TEST_PLIST_URL.toString(), TEST_BUNDLEIDENTIFIER);
     assertContains(TEST_PLIST_URL.toExternalForm(), result);
   }
 
@@ -140,7 +141,7 @@ public class OtaHtmlServiceTest
     String result = writer.getBuffer().toString();
     assertContains(CHECK_TITLE, result);
     assertContains(TEST_IPA_LINK_WITH_CLASSIFIER, result);
-    assertContains(TEST_OTA_LINK_WITH_CLASSIFIERS, result);
+    TestUtils.assertOtaLink(result, TEST_PLIST_URL_WITH_CLASSIFIERS.toString(), TEST_BUNDLEIDENTIFIER);
     assertContains(TEST_PLIST_URL_WITH_CLASSIFIERS.toExternalForm(), result);
   }
 

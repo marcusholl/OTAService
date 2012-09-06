@@ -34,7 +34,19 @@
 		a:focus { font-weight:bold; color:#000066; text-decoration:underline; }
 		a:hover { font-weight:bold; color:#000066; text-decoration:underline; }
 		a:active { font-weight:bold; color:#000066; text-decoration:underline; }
-    </style>    
+    </style>
+    <script type="text/javascript">
+		var _gaq = _gaq || [];
+  		_gaq.push(['_setAccount', 'UA-31199265-3']);
+  		_gaq.push(['_setDomainName', 'none']);
+  		_gaq.push(['_trackPageview']);
+
+  		(function() {
+    		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 </head>
 <body>
 
@@ -70,8 +82,8 @@ Please see the <a href="https://wiki/wiki/display/NWPro/iOS+Store+Usage+Terms" t
 <br>
 <b style='font-size:10pt'>&nbsp;&nbsp;&nbsp;Install App: $title</b><br><br><br>
 <table width='100%'><tr>
-<td width='50%' align='center'><b><a href='itms-services:///?action=download-manifest&url=$plistUrl'>Install Over-The-Air</a></b></td>
-<td width='50%' align='center'><b><a href='$ipaUrl'>Install via iTunes</a></b></td>
+<td width='50%' align='center'><b><a href='itms-services:///?action=download-manifest&url=$plistUrl' onClick="_gaq.push(['_trackEvent', 'OTA', 'OTA', '$bundleIdentifier']);">Install Over-The-Air</a></b></td>
+<td width='50%' align='center'><b><a href='$ipaUrl' onClick="_gaq.push(['_trackEvent', 'OTA', 'IPA', '$bundleIdentifier']);">Install via iTunes</a></b></td>
 </tr></table>
 <br><br>
 </td></tr><tr><td colspan="2">

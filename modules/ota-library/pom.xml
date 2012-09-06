@@ -1,34 +1,50 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.sap.prd.mobile.ios.ota</groupId>
-		<artifactId>parent</artifactId>
-		<version>1.0.2-SNAPSHOT</version>
-		<relativePath>../../parent</relativePath>
-	</parent>
+    <parent>
+        <groupId>com.sap.prd.mobile.ios.ota</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.2-SNAPSHOT</version>
+        <relativePath>../../parent</relativePath>
+    </parent>
 
-	<artifactId>com.sap.prd.mobile.ios.ota.library</artifactId>
-	<packaging>jar</packaging>
-	<name>Over-the-air deployment library</name>
+    <artifactId>com.sap.prd.mobile.ios.ota.library</artifactId>
+    <packaging>jar</packaging>
+    <name>Over-the-air deployment library</name>
     <description>This library can be used to create OTA HTML pages</description>
-    
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.sonatype.plexus</groupId>
             <artifactId>plexus-cipher</artifactId>
         </dependency>
-	</dependencies>
+    </dependencies>
 
-	
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
 </project>

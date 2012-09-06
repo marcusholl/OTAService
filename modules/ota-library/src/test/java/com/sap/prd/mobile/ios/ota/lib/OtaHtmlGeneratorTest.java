@@ -21,10 +21,13 @@ package com.sap.prd.mobile.ios.ota.lib;
 
 import static com.sap.prd.mobile.ios.ota.lib.TestUtils.assertContains;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 
@@ -50,13 +53,16 @@ public class OtaHtmlGeneratorTest
     URL plistURL = OtaPlistGenerator.generatePlistRequestUrl(plistServiceUrl, referer, title,
           bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
     String generated = OtaHtmlGenerator.getInstance().generate(
-          new Parameters(referer, title, plistURL, null, null));
+          new Parameters(referer, title, bundleIdentifier, plistURL, null, null));
 
-    String checkOtaLink = String.format(
-          "<a href='itms-services:///?action=download-manifest&url=%s'>Install Over-The-Air</a>", plistURL);
-    assertContains(checkOtaLink, generated);
-    assertContains(String.format("<a href='%s'>Install via iTunes</a>", checkIpaURL), generated);
     assertContains(String.format("Install App: %s", title), generated);
+    
+    TestUtils.assertOtaLink(generated, plistURL.toString(), bundleIdentifier);
+    
+    Pattern checkIpaLinkPattern = Pattern.compile("<a href='([^']+)'[^>]*>Install via iTunes</a>");
+    Matcher checkIpaLinkMatcher = checkIpaLinkPattern.matcher(generated);
+    assertTrue("Ipa link not found", checkIpaLinkMatcher.find());
+    assertEquals(checkIpaURL, checkIpaLinkMatcher.group(1));
   }
 
   @Test

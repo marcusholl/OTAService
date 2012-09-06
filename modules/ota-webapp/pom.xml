@@ -33,6 +33,12 @@
 			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>com.sap.prd.mobile.ios.ota</groupId>
+            <artifactId>com.sap.prd.mobile.ios.ota.library</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>        
 	</dependencies>
 	
     <build>

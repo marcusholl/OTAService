@@ -52,6 +52,8 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
      *          The original referer to the initial HTML page (e.g. in Nexus)
      * @param title
      *          The title of the App
+     * @param bundleIdentifier
+     *          The bundle identifier
      * @param plistUrl
      *          The complete OTA PLIST Service URL for this App containing all parameters.
      * @param ipaClassifier
@@ -60,12 +62,13 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
      *          The classifier used in the OTA HTML artifact. If null no classifier will be used.
      * @throws MalformedURLException
      */
-    public Parameters(String referer, String title, URL plistUrl, String ipaClassifier, String otaClassifier)
+    public Parameters(String referer, String title, String bundleIdentifier, URL plistUrl, String ipaClassifier, String otaClassifier)
           throws MalformedURLException
     {
       super();
       URL ipaUrl = LibUtils.generateDirectIpaUrl(referer, ipaClassifier, otaClassifier);
       mappings.put(IPA_URL, ipaUrl.toExternalForm());
+      mappings.put(BUNDLE_IDENTIFIER, bundleIdentifier);
       mappings.put(PLIST_URL, plistUrl.toExternalForm());
       mappings.put(TITLE, title);
     }
