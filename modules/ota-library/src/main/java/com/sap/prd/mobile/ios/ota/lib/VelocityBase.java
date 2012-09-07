@@ -19,16 +19,18 @@
  */
 package com.sap.prd.mobile.ios.ota.lib;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
 
 import com.sap.prd.mobile.ios.ota.lib.VelocityBase.IParameters;
 
@@ -43,14 +45,20 @@ public abstract class VelocityBase<P extends IParameters>
 
   protected Template template;
 
-  protected VelocityBase(String templateName)
+  protected VelocityBase(String templateName) throws FileNotFoundException
   {
-    Properties props = new Properties();
-    props.put("resource.loader", "class,jar");
-    props.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-    props.put("jar.resource.loader.class", "org.apache.velocity.runtime.resource.loader.JarResourceLoader");
-    Velocity.init(props);//"velocity.props");
-    template = Velocity.getTemplate(templateName);
+    VelocityEngine ve = new VelocityEngine();
+    ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "class,jar,file");
+    ve.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+    ve.setProperty("jar.resource.loader.class", "org.apache.velocity.runtime.resource.loader.JarResourceLoader");
+    if(templateName.contains("/") || templateName.contains("\\")) {
+      File templateFile = new File(templateName);
+      if(!templateFile.isFile()) throw new FileNotFoundException("Template file not found at "+templateFile.getAbsolutePath());
+      ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, templateFile.getParent());
+      template = ve.getTemplate(templateFile.getName());
+    } else {
+      template = ve.getTemplate(templateName);
+    }
   }
 
   public String generate(P parameters) throws IOException

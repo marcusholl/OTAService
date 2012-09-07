@@ -19,12 +19,15 @@
  */
 package com.sap.prd.mobile.ios.ota.lib;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.velocity.runtime.RuntimeConstants;
 
 import com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.Parameters;
 
@@ -41,7 +44,8 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
   public static final String BUNDLE_VERSION = "bundleVersion";
   public static final String IPA_CLASSIFIER = "ipaClassifier";
   public static final String OTA_CLASSIFIER = "otaClassifier";
-
+  public static final String GOOGLE_ANALYTICS_ID = "googleAnalyticsId";
+  
   /**
    * Parameters required for the <code>OtaHtmlGenerator</code>.
    */
@@ -62,7 +66,8 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
      *          The classifier used in the OTA HTML artifact. If null no classifier will be used.
      * @throws MalformedURLException
      */
-    public Parameters(String referer, String title, String bundleIdentifier, URL plistUrl, String ipaClassifier, String otaClassifier)
+    public Parameters(String referer, String title, String bundleIdentifier, URL plistUrl, String ipaClassifier,
+          String otaClassifier, String googleAnalyticsId)
           throws MalformedURLException
     {
       super();
@@ -71,6 +76,7 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
       mappings.put(BUNDLE_IDENTIFIER, bundleIdentifier);
       mappings.put(PLIST_URL, plistUrl.toExternalForm());
       mappings.put(TITLE, title);
+      mappings.put(GOOGLE_ANALYTICS_ID, googleAnalyticsId);
     }
   }
 
@@ -80,19 +86,32 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
   public static synchronized OtaHtmlGenerator getInstance()
   {
     if (instance == null) {
-      instance = new OtaHtmlGenerator(null);
+      try {
+        instance = new OtaHtmlGenerator(null);
+      } catch(FileNotFoundException e) {
+        //ignore, cannot happen for template resource (not file)
+      }
     }
     return instance;
   }
 
-  public static synchronized OtaHtmlGenerator getNewInstance(String template)
+  public static synchronized OtaHtmlGenerator getNewInstance(String template) throws FileNotFoundException
   {
     return new OtaHtmlGenerator(template);
   }
 
-  private OtaHtmlGenerator(String template)
+  private OtaHtmlGenerator(String template) throws FileNotFoundException
   {
-    super(template == null ? DEFAULT_TEMPLATE : template);
+    super(validateTemplate(template));
+  }
+
+  private static String validateTemplate(String template)
+  {
+    if(template == null) return DEFAULT_TEMPLATE;
+    if( (template.contains("/") || template.contains("\\")) && !new File(template).isFile()) {
+      return DEFAULT_TEMPLATE; //file does not exist
+    } 
+    return template;
   }
 
   @Override

@@ -44,6 +44,7 @@ public class OtaHtmlGeneratorTest
   private final static String bundleVersion = "1.0.2";
   private final static String otaClassifier = "otaClassifier";
   private final static String ipaClassifier = "ipaClassifier";
+  private final static String googleAnalyticsId = "googleAnalyticsId";
 
   private static final String plistServiceUrl = "http://ota-server:8080/OTAService/PLIST";
 
@@ -53,7 +54,7 @@ public class OtaHtmlGeneratorTest
     URL plistURL = OtaPlistGenerator.generatePlistRequestUrl(plistServiceUrl, referer, title,
           bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
     String generated = OtaHtmlGenerator.getInstance().generate(
-          new Parameters(referer, title, bundleIdentifier, plistURL, null, null));
+          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, googleAnalyticsId));
 
     assertContains(String.format("Install App: %s", title), generated);
     

@@ -26,6 +26,14 @@
     <servlet>
         <servlet-name>otaHtmlService</servlet-name>
         <servlet-class>com.sap.prd.mobile.ios.ota.webapp.OtaHtmlService</servlet-class>
+		<init-param>
+			<param-name>htmlTemplatePath</param-name>
+			<param-value>template.html</param-value>
+		</init-param>
+		<init-param>
+			<param-name>googleAnalyticsId</param-name>
+			<param-value></param-value>
+		</init-param>
     </servlet>
     <servlet>
         <servlet-name>otaPlistService</servlet-name>

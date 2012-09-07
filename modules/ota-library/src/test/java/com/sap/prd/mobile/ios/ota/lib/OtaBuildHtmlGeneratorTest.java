@@ -44,6 +44,7 @@ public class OtaBuildHtmlGeneratorTest
   private final static String bundleVersion = "1.0.2";
   private final static String ipaClassifier = "ipaClassifier";
   private final static String otaClassifier = "otaClassifier";
+  private final static String googleAnalyticsId = "googleAnalyticsId";
 
 
   @Test
@@ -51,7 +52,7 @@ public class OtaBuildHtmlGeneratorTest
   {
     URL htmlServiceUrl = new URL(HTML_SERVICE);
     String generated = OtaBuildHtmlGenerator.getInstance().generate(
-          new Parameters(htmlServiceUrl, title, bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier));
+          new Parameters(htmlServiceUrl, title, bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier, googleAnalyticsId));
     assertContains(TITLE + "=" + title, generated);
     assertContains(BUNDLE_IDENTIFIER + "=" + bundleIdentifier, generated);
     assertContains(BUNDLE_VERSION + "=" + bundleVersion, generated);
@@ -76,7 +77,7 @@ public class OtaBuildHtmlGeneratorTest
     URL htmlServiceUrl = new URL(HTML_SERVICE);
     String generated = OtaBuildHtmlGenerator.getInstance().generate(
           new Parameters(htmlServiceUrl, "MyApp", "com.sap.tip.production.ios.ota.test", "1.0", "Production-iphoneos",
-                "OTA-Installer"));
+                "OTA-Installer", googleAnalyticsId));
     System.out.println(generated);
   }
 

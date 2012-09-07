@@ -24,6 +24,7 @@ import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.BUNDLE_VERSION;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.IPA_CLASSIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.OTA_CLASSIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.TITLE;
+import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.GOOGLE_ANALYTICS_ID;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,7 +46,8 @@ public class OtaHtmlService extends HttpServlet
 {
 
   private final Logger LOG = Logger.getLogger(OtaPlistService.class.getSimpleName());
-
+  private final static String HTML_TEMPLATE_PATH_KEY = "htmlTemplatePath";
+  
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
   {
@@ -76,10 +78,19 @@ public class OtaHtmlService extends HttpServlet
               .getParameter(BUNDLE_IDENTIFIER), request.getParameter(BUNDLE_VERSION),
             request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER)));
 
+      String htmlTemplatePath = null;
+      String googleAnalyticsId = null;
+      try {
+        htmlTemplatePath = this.getServletContext().getInitParameter(HTML_TEMPLATE_PATH_KEY);
+        googleAnalyticsId = this.getServletContext().getInitParameter(GOOGLE_ANALYTICS_ID);
+      } catch(IllegalStateException e) {
+        if(!e.getMessage().equals("ServletConfig has not been initialized")) throw e; 
+      }
+      
       PrintWriter writer = response.getWriter();
-      OtaHtmlGenerator.getInstance().generate(writer,
+      OtaHtmlGenerator.getNewInstance(htmlTemplatePath).generate(writer,
             new Parameters(originalReferer, request.getParameter(TITLE), request.getParameter(BUNDLE_IDENTIFIER), plistUrl,
-                  request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER)));
+                  request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER), googleAnalyticsId));
       writer.flush();
       writer.close();
     }

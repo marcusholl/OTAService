@@ -19,6 +19,7 @@
  */
 package com.sap.prd.mobile.ios.ota.lib;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -41,6 +42,7 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
   public static final String BUNDLE_VERSION = "bundleVersion";
   public static final String IPA_CLASSIFIER = "ipaClassifier";
   public static final String OTA_CLASSIFIER = "otaClassifier";
+  public static final String GOOGLE_ANALYTICS_ID = "googleAnalyticsId";
 
   /**
    * Parameters required for the <code>OtaBuildHtmlGenerator</code>.
@@ -64,7 +66,7 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
      * @throws MalformedURLException
      */
     public Parameters(URL htmlServiceUrl, String title, String bundleIdentifier, String bundleVersion,
-          String ipaClassifier, String otaClassifier)
+          String ipaClassifier, String otaClassifier, String googleAnalyticsId)
           throws MalformedURLException
     {
       super();
@@ -77,6 +79,7 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
       mappings.put(BUNDLE_VERSION, bundleVersion);
       mappings.put(IPA_CLASSIFIER, ipaClassifier);
       mappings.put(OTA_CLASSIFIER, otaClassifier);
+      mappings.put(GOOGLE_ANALYTICS_ID, googleAnalyticsId);
     }
   }
 
@@ -87,17 +90,21 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
   public static synchronized OtaBuildHtmlGenerator getInstance()
   {
     if (instance == null) {
-      instance = new OtaBuildHtmlGenerator(null);
+      try {
+        instance = new OtaBuildHtmlGenerator(null);
+      } catch(FileNotFoundException e) {
+        //ignore, cannot happen for template resource (not file)
+      }
     }
     return instance;
   }
 
-  public static synchronized OtaBuildHtmlGenerator getNewInstance(String template)
+  public static synchronized OtaBuildHtmlGenerator getNewInstance(String template) throws FileNotFoundException
   {
     return new OtaBuildHtmlGenerator(template);
   }
 
-  private OtaBuildHtmlGenerator(String template)
+  private OtaBuildHtmlGenerator(String template) throws FileNotFoundException
   {
     super(template == null ? DEFAULT_TEMPLATE : template);
   }
