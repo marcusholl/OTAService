@@ -19,7 +19,6 @@
  */
 package com.sap.prd.mobile.ios.ota.lib;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,7 +78,7 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
     }
   }
 
-  private static final String DEFAULT_TEMPLATE = "template.html";
+  static final String DEFAULT_TEMPLATE = "template.html";
   private static OtaHtmlGenerator instance = null;
 
   public static synchronized OtaHtmlGenerator getInstance()
@@ -106,10 +105,7 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
 
   private static String validateTemplate(String template)
   {
-    if(template == null) return DEFAULT_TEMPLATE;
-    if( (template.contains("/") || template.contains("\\")) && !new File(template).isFile()) {
-      return DEFAULT_TEMPLATE; //file does not exist
-    } 
+    if(template == null || template.trim().length() == 0) return DEFAULT_TEMPLATE;
     return template;
   }
 

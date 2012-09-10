@@ -25,15 +25,19 @@ import static com.sap.prd.mobile.ios.ota.lib.OtaBuildHtmlGenerator.IPA_CLASSIFIE
 import static com.sap.prd.mobile.ios.ota.lib.OtaBuildHtmlGenerator.OTA_CLASSIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaBuildHtmlGenerator.TITLE;
 import static com.sap.prd.mobile.ios.ota.lib.TestUtils.assertContains;
+import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.junit.Test;
 
-import com.sap.prd.mobile.ios.ota.lib.OtaBuildHtmlGenerator;
 import com.sap.prd.mobile.ios.ota.lib.OtaBuildHtmlGenerator.Parameters;
+
 public class OtaBuildHtmlGeneratorTest
 {
 
@@ -46,13 +50,13 @@ public class OtaBuildHtmlGeneratorTest
   private final static String otaClassifier = "otaClassifier";
   private final static String googleAnalyticsId = "googleAnalyticsId";
 
-
   @Test
   public void testCorrectValues() throws IOException
   {
     URL htmlServiceUrl = new URL(HTML_SERVICE);
     String generated = OtaBuildHtmlGenerator.getInstance().generate(
-          new Parameters(htmlServiceUrl, title, bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier, googleAnalyticsId));
+          new Parameters(htmlServiceUrl, title, bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier,
+                googleAnalyticsId));
     assertContains(TITLE + "=" + title, generated);
     assertContains(BUNDLE_IDENTIFIER + "=" + bundleIdentifier, generated);
     assertContains(BUNDLE_VERSION + "=" + bundleVersion, generated);
@@ -72,6 +76,42 @@ public class OtaBuildHtmlGeneratorTest
   }
 
   @Test
+  public void testAlternativeTemplateByResource() throws IOException
+  {
+    URL htmlServiceUrl = new URL(HTML_SERVICE);
+    String generated = OtaBuildHtmlGenerator.getNewInstance("alternativeBuildTemplate.html").generate(
+          new Parameters(htmlServiceUrl, title, bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier,
+                googleAnalyticsId));
+    checkAlternativeResult(generated);
+  }
+
+  @Test
+  public void testAlternativeTemplateByFile() throws IOException
+  {
+    URL htmlServiceUrl = new URL(HTML_SERVICE);
+    String generated = OtaBuildHtmlGenerator.getNewInstance("./src/test/resources/alternativeBuildTemplate.html")
+      .generate(
+            new Parameters(htmlServiceUrl, title, bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier,
+                  googleAnalyticsId));
+    checkAlternativeResult(generated);
+  }
+
+  private void checkAlternativeResult(String generated)
+  {
+    assertContains(TITLE + "=" + title, generated);
+    assertContains("ALTERNATIVE HTML BUILD TEMPLATE", generated);
+    assertContains(BUNDLE_IDENTIFIER + "=" + bundleIdentifier, generated);
+    assertContains(BUNDLE_VERSION + "=" + bundleVersion, generated);
+    assertContains(IPA_CLASSIFIER + "=" + ipaClassifier, generated);
+    assertContains(OTA_CLASSIFIER + "=" + otaClassifier, generated);
+    assertContains(
+          "<a href=\""
+                + HTML_SERVICE
+                + "?title=MyApp&bundleIdentifier=com.sap.xyz.MyApp&bundleVersion=1.0.2&ipaClassifier=ipaClassifier&otaClassifier=otaClassifier\"",
+          generated);
+  }
+
+  @Test
   public void testProject() throws MalformedURLException, IOException
   {
     URL htmlServiceUrl = new URL(HTML_SERVICE);
@@ -79,6 +119,47 @@ public class OtaBuildHtmlGeneratorTest
           new Parameters(htmlServiceUrl, "MyApp", "com.sap.tip.production.ios.ota.test", "1.0", "Production-iphoneos",
                 "OTA-Installer", googleAnalyticsId));
     System.out.println(generated);
+  }
+
+  public void getNewInstanceCorrectResource() throws FileNotFoundException
+  {
+    assertEquals(OtaBuildHtmlGenerator.DEFAULT_TEMPLATE,
+          OtaBuildHtmlGenerator.getNewInstance(OtaBuildHtmlGenerator.DEFAULT_TEMPLATE).template.getName());
+  }
+
+  @Test
+  public void getNewInstanceNull() throws FileNotFoundException
+  {
+    assertEquals(OtaBuildHtmlGenerator.DEFAULT_TEMPLATE,
+          OtaBuildHtmlGenerator.getNewInstance(null).template.getName());
+  }
+
+  @Test
+  public void getNewInstanceEmpty() throws FileNotFoundException
+  {
+    assertEquals(OtaBuildHtmlGenerator.DEFAULT_TEMPLATE, 
+          OtaBuildHtmlGenerator.getNewInstance("").template.getName());
+  }
+
+  @Test(expected = ResourceNotFoundException.class)
+  public void getNewInstanceWrongResource() throws FileNotFoundException
+  {
+    assertEquals(OtaBuildHtmlGenerator.DEFAULT_TEMPLATE,
+          OtaBuildHtmlGenerator.getNewInstance("doesnotexist.htm").template.getName());
+  }
+
+  @Test
+  public void getNewInstanceCorrectFile() throws FileNotFoundException
+  {
+    assertEquals("alternativeBuildTemplate.html",
+          OtaBuildHtmlGenerator.getNewInstance(new File("./src/test/resources/alternativeBuildTemplate.html").getAbsolutePath()).template.getName());
+  }
+
+  @Test(expected = FileNotFoundException.class)
+  public void getNewInstanceWrongFile() throws FileNotFoundException
+  {
+    assertEquals(OtaBuildHtmlGenerator.DEFAULT_TEMPLATE,
+          OtaBuildHtmlGenerator.getNewInstance(new File("./doesnotexist.htm").getAbsolutePath()).template.getName());
   }
 
 }

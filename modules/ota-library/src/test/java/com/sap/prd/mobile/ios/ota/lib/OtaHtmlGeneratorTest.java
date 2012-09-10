@@ -24,12 +24,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.junit.Test;
 
 import com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.Parameters;
@@ -72,11 +74,7 @@ public class OtaHtmlGeneratorTest
           bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
     String generated = OtaHtmlGenerator.getNewInstance("alternativeTemplate.html").generate(
           new Parameters(referer, title, bundleIdentifier, plistURL, null, null, googleAnalyticsId));
-
-    assertContains("ALTERNATIVE HTML TEMPLATE", generated);
-    assertContains(String.format("Install App: %s", title), generated);
-    assertContains("<a href='itms-services:///?action=download-manifest&url="+plistURL+"'>OTA</a>", generated);
-    assertContains("<a href='"+checkIpaURL+"'>IPA</a>", generated);
+    checkAlternativeResult(plistURL, generated);
   }
 
   @Test
@@ -88,7 +86,11 @@ public class OtaHtmlGeneratorTest
     assertTrue("File does not exist at "+templateFile.getAbsolutePath(), templateFile.isFile());
     String generated = OtaHtmlGenerator.getNewInstance(templateFile.getAbsolutePath()).generate(
           new Parameters(referer, title, bundleIdentifier, plistURL, null, null, googleAnalyticsId));
+    checkAlternativeResult(plistURL, generated);
+  }
 
+  private void checkAlternativeResult(URL plistURL, String generated)
+  {
     assertContains("ALTERNATIVE HTML TEMPLATE", generated);
     assertContains(String.format("Install App: %s", title), generated);
     assertContains("<a href='itms-services:///?action=download-manifest&url="+plistURL+"'>OTA</a>", generated);
@@ -123,5 +125,46 @@ public class OtaHtmlGeneratorTest
           OtaHtmlGenerator.generateHtmlServiceUrl(url, "MyApp", "com.sap.myApp.XYZ", "3.4.5.6",
                 null, otaClassifier).toExternalForm());
   }
+  
+  public void getNewInstanceCorrectResource() throws FileNotFoundException
+  {
+    assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE,
+          OtaHtmlGenerator.getNewInstance(OtaHtmlGenerator.DEFAULT_TEMPLATE).template.getName());
+  }
 
+  @Test
+  public void getNewInstanceNull() throws FileNotFoundException
+  {
+    assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE,
+          OtaHtmlGenerator.getNewInstance(null).template.getName());
+  }
+
+  @Test
+  public void getNewInstanceEmpty() throws FileNotFoundException
+  {
+    assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE, 
+          OtaHtmlGenerator.getNewInstance("").template.getName());
+  }
+
+  @Test(expected = ResourceNotFoundException.class)
+  public void getNewInstanceWrongResource() throws FileNotFoundException
+  {
+    assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE,
+          OtaHtmlGenerator.getNewInstance("doesnotexist.htm").template.getName());
+  }
+
+  @Test
+  public void getNewInstanceCorrectFile() throws FileNotFoundException
+  {
+    assertEquals("alternativeTemplate.html",
+          OtaHtmlGenerator.getNewInstance(new File("./src/test/resources/alternativeTemplate.html").getAbsolutePath()).template.getName());
+  }
+
+  @Test(expected = FileNotFoundException.class)
+  public void getNewInstanceWrongFile() throws FileNotFoundException
+  {
+    assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE,
+          OtaHtmlGenerator.getNewInstance(new File("./doesnotexist.htm").getAbsolutePath()).template.getName());
+  }
+  
 }

@@ -1,25 +1,80 @@
-<!--
-  #%L
-  Over-the-air deployment library
-  %%
-  Copyright (C) 2012 SAP AG
-  %%
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-  
-       http://www.apache.org/licenses/LICENSE-2.0
-  
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  #L%
-  -->
 <html>
 <head>
-<!--meta http-equiv="refresh" content="0; URL=$htmlUrl"-->
+
+		<style>
+			body {
+				font-family: Sans Serif, Helvetica, Arial;
+				font-size: 10pt;
+				padding: 30px;
+				background-color: #e6e6e6;
+				color: #000000;
+			}
+			
+			h1,h2,h3 {
+				text-shadow: 3px 3px 5px #959595;
+			}
+			
+			.maincontainer{
+				min-width: 500px;
+				max-width: 840px;
+				margin: 0 auto; /*Center container on page*/
+			}
+								
+			.contentbox
+			{
+				border-top-left-radius: 4px;
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+				border-bottom-left-radius: 4px;
+				background-color: #ffffff;
+				padding-top: 1px;
+				padding-left: 20px;
+				padding-right: 20px;
+				padding-bottom: 20px;
+				border-style: solid;
+				border-width: 1px;
+				border-color: #a0a0a0;
+				box-shadow: 1px 1px 5px #818181;
+			}
+
+            input { border-radius: 4px; box-shadow: 1px 1px 3px #d0d0d0;}
+			
+			a.button {
+				border-top-left-radius: 20px;
+				border-top-right-radius: 20px;
+				border-bottom-right-radius: 20px;
+				border-bottom-left-radius: 20px;
+				padding-top: 10px;
+				padding-left: 20px;
+				padding-right: 20px;
+				padding-bottom: 10px;
+				border-style: solid;
+				border-width: 1px;
+				border-color: #a0a0a0;
+				box-shadow: 1px 1px 5px #818181;
+			}
+			
+            a.button:link, a.button:visited {
+				color: #ffffff;
+				font-weight: bold;
+				text-decoration: none;
+				background-color: #08C;
+			}
+            a.button:hover {
+				color: #ffffff;
+				font-weight: bold;
+				text-decoration: none;
+				background-color: #06A;
+			}
+            a.button:active {
+				color: #ffffff;
+				font-weight: bold;
+				text-decoration: none;
+				background-color: #666;
+				box-shadow: 1px 1px 10px #818181;
+			}
+		</style>
+		
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
   		_gaq.push(['_setAccount', '$googleAnalyticsId']);
@@ -32,6 +87,7 @@
     		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
 	</script>
+	
 </head>
 <body>
 <iframe src="$htmlUrl" width="700px" height="450px" marginheight="0" marginwidth="0" frameborder="0">

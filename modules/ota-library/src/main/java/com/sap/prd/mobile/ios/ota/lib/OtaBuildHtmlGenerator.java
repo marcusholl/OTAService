@@ -63,6 +63,8 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
      *          used.
      * @param otaClassifier
      *          The classifier used in the OTA HTML artifact. If null no classifier will be used.
+     * @param googleAnalyticsId
+     *          The Google Analytics Account ID. Can be null.
      * @throws MalformedURLException
      */
     public Parameters(URL htmlServiceUrl, String title, String bundleIdentifier, String bundleVersion,
@@ -79,12 +81,12 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
       mappings.put(BUNDLE_VERSION, bundleVersion);
       mappings.put(IPA_CLASSIFIER, ipaClassifier);
       mappings.put(OTA_CLASSIFIER, otaClassifier);
-      mappings.put(GOOGLE_ANALYTICS_ID, googleAnalyticsId);
+      mappings.put(GOOGLE_ANALYTICS_ID, googleAnalyticsId==null?"":googleAnalyticsId);
     }
   }
 
 
-  private static final String DEFAULT_TEMPLATE = "buildTemplate.html";
+  static final String DEFAULT_TEMPLATE = "buildTemplate.html";
   private static OtaBuildHtmlGenerator instance = null;
 
   public static synchronized OtaBuildHtmlGenerator getInstance()
@@ -106,7 +108,13 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
 
   private OtaBuildHtmlGenerator(String template) throws FileNotFoundException
   {
-    super(template == null ? DEFAULT_TEMPLATE : template);
+    super(validateTemplate(template));
+  }
+  
+  private static String validateTemplate(String template)
+  {
+    if(template == null || template.trim().length() == 0) return DEFAULT_TEMPLATE;
+    return template;
   }
 
   @Override
