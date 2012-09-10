@@ -46,7 +46,7 @@ public class OtaHtmlService extends HttpServlet
 {
 
   private final Logger LOG = Logger.getLogger(OtaPlistService.class.getSimpleName());
-  private final static String HTML_TEMPLATE_PATH_KEY = "htmlTemplatePath";
+  public final static String HTML_TEMPLATE_PATH_KEY = "htmlTemplatePath";
   
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -84,7 +84,7 @@ public class OtaHtmlService extends HttpServlet
         htmlTemplatePath = this.getServletContext().getInitParameter(HTML_TEMPLATE_PATH_KEY);
         googleAnalyticsId = this.getServletContext().getInitParameter(GOOGLE_ANALYTICS_ID);
       } catch(IllegalStateException e) {
-        if(!e.getMessage().equals("ServletConfig has not been initialized")) throw e; 
+        if(!e.getMessage().equals("ServletConfig has not been initialized")) throw e;
       }
       
       PrintWriter writer = response.getWriter();

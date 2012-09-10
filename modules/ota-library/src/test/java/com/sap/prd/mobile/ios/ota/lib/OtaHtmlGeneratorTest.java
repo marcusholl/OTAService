@@ -23,6 +23,7 @@ import static com.sap.prd.mobile.ios.ota.lib.TestUtils.assertContains;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,8 +32,6 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator;
-import com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator;
 import com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.Parameters;
 public class OtaHtmlGeneratorTest
 {
@@ -66,6 +65,36 @@ public class OtaHtmlGeneratorTest
     assertEquals(checkIpaURL, checkIpaLinkMatcher.group(1));
   }
 
+  @Test
+  public void testAlternativeTemplateByResource() throws IOException
+  {
+    URL plistURL = OtaPlistGenerator.generatePlistRequestUrl(plistServiceUrl, referer, title,
+          bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
+    String generated = OtaHtmlGenerator.getNewInstance("alternativeTemplate.html").generate(
+          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, googleAnalyticsId));
+
+    assertContains("ALTERNATIVE HTML TEMPLATE", generated);
+    assertContains(String.format("Install App: %s", title), generated);
+    assertContains("<a href='itms-services:///?action=download-manifest&url="+plistURL+"'>OTA</a>", generated);
+    assertContains("<a href='"+checkIpaURL+"'>IPA</a>", generated);
+  }
+
+  @Test
+  public void testAlternativeTemplateByFile() throws IOException
+  {
+    URL plistURL = OtaPlistGenerator.generatePlistRequestUrl(plistServiceUrl, referer, title,
+          bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
+    File templateFile = new File("./src/test/resources/alternativeTemplate.html");
+    assertTrue("File does not exist at "+templateFile.getAbsolutePath(), templateFile.isFile());
+    String generated = OtaHtmlGenerator.getNewInstance(templateFile.getAbsolutePath()).generate(
+          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, googleAnalyticsId));
+
+    assertContains("ALTERNATIVE HTML TEMPLATE", generated);
+    assertContains(String.format("Install App: %s", title), generated);
+    assertContains("<a href='itms-services:///?action=download-manifest&url="+plistURL+"'>OTA</a>", generated);
+    assertContains("<a href='"+checkIpaURL+"'>IPA</a>", generated);
+  }
+  
   @Test
   public void testGenerateHtmlServiceUrl() throws MalformedURLException
   {
