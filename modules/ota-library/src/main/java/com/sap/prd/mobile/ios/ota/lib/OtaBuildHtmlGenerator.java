@@ -92,11 +92,7 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
   public static synchronized OtaBuildHtmlGenerator getInstance()
   {
     if (instance == null) {
-      try {
-        instance = new OtaBuildHtmlGenerator(null);
-      } catch(FileNotFoundException e) {
-        //ignore, cannot happen for template resource (not file)
-      }
+      instance = new OtaBuildHtmlGenerator(null);
     }
     return instance;
   }
@@ -106,7 +102,7 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
     return new OtaBuildHtmlGenerator(template);
   }
 
-  private OtaBuildHtmlGenerator(String template) throws FileNotFoundException
+  private OtaBuildHtmlGenerator(String template)
   {
     super(validateTemplate(template));
   }

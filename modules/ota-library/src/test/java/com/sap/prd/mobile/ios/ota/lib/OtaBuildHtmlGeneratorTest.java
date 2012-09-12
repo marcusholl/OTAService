@@ -155,7 +155,7 @@ public class OtaBuildHtmlGeneratorTest
           OtaBuildHtmlGenerator.getNewInstance(new File("./src/test/resources/alternativeBuildTemplate.html").getAbsolutePath()).template.getName());
   }
 
-  @Test(expected = FileNotFoundException.class)
+  @Test(expected = ResourceNotFoundException.class)
   public void getNewInstanceWrongFile() throws FileNotFoundException
   {
     assertEquals(OtaBuildHtmlGenerator.DEFAULT_TEMPLATE,

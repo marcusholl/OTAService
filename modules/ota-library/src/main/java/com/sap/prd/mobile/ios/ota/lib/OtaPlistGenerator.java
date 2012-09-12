@@ -19,7 +19,6 @@
  */
 package com.sap.prd.mobile.ios.ota.lib;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -83,16 +82,12 @@ public class OtaPlistGenerator extends VelocityBase<Parameters>
   public static synchronized OtaPlistGenerator getInstance()
   {
     if (instance == null) {
-      try {
-        instance = new OtaPlistGenerator();
-      } catch(FileNotFoundException e) {
-        //ignore, cannot happen for template resource (not file)
-      }
+      instance = new OtaPlistGenerator();
     }
     return instance;
   }
 
-  private OtaPlistGenerator() throws FileNotFoundException
+  private OtaPlistGenerator()
   {
     super(DEFAULT_TEMPLATE);
   }

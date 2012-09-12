@@ -20,7 +20,6 @@
 package com.sap.prd.mobile.ios.ota.lib;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -30,7 +29,9 @@ import java.util.Map;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.util.StringUtils;
 
 import com.sap.prd.mobile.ios.ota.lib.VelocityBase.IParameters;
 
@@ -45,20 +46,22 @@ public abstract class VelocityBase<P extends IParameters>
 
   protected Template template;
 
-  protected VelocityBase(String templateName) throws FileNotFoundException
+  protected VelocityBase(String templateName)
   {
+    if (StringUtils.nullTrim(templateName) == null) throw new IllegalArgumentException("templateName not specified");
     VelocityEngine ve = new VelocityEngine();
     ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "class,jar,file");
     ve.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
     ve.setProperty("jar.resource.loader.class", "org.apache.velocity.runtime.resource.loader.JarResourceLoader");
-    if(templateName.contains("/") || templateName.contains("\\")) {
-      File templateFile = new File(templateName);
-      if(!templateFile.isFile()) throw new FileNotFoundException("Template file not found at "+templateFile.getAbsolutePath());
+    File templateFile = new File(templateName);
+    if (templateFile.isFile()) {
       ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, templateFile.getParent());
       template = ve.getTemplate(templateFile.getName());
-    } else {
+    }
+    else {
       template = ve.getTemplate(templateName);
     }
+    if(template == null) throw new ResourceNotFoundException("Neither file nor resource found for '"+templateName+"'");
   }
 
   public String generate(P parameters) throws IOException
@@ -68,12 +71,10 @@ public abstract class VelocityBase<P extends IParameters>
     generate(writer, parameters);
     writer.flush();
     writer.close();
-    return swriter.getBuffer().toString();    
+    return swriter.getBuffer().toString();
   }
 
-  public synchronized void generate(PrintWriter writer,
-        P parameters)
-        throws IOException
+  public synchronized void generate(PrintWriter writer, P parameters) throws IOException
   {
     VelocityContext context = new VelocityContext();
     Map<String, Object> mappings = parameters.getMappings();

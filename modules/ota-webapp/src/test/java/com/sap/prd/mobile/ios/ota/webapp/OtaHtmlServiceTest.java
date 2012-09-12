@@ -70,7 +70,6 @@ public class OtaHtmlServiceTest
   private static URL TEST_PLIST_URL;
   private static String TEST_OTA_LINK;
   private static URL TEST_PLIST_URL_WITH_CLASSIFIERS;
-  private static String TEST_OTA_LINK_WITH_CLASSIFIERS;
   
   private static String TEST_ALTERNATIVE_TEMPLATE = new File("./src/test/resources/alternativeTemplate.html").getAbsolutePath();
   private static String TEST_GOOGLE_ANALYTICS_ID = "TEST_GOOGLE_123";
@@ -88,8 +87,6 @@ public class OtaHtmlServiceTest
     TEST_PLIST_URL_WITH_CLASSIFIERS = OtaPlistGenerator.generatePlistRequestUrl(
           "http://ota-server:8080/PLIST", TEST_REFERER_WITH_CLASSIFIER, TEST_TITLE, TEST_BUNDLEIDENTIFIER,
           TEST_BUNDLEVERSION, IPA_CLASSIFIER, OTA_CLASSIFIER);
-    TEST_OTA_LINK_WITH_CLASSIFIERS = String.format("<a href='itms-services:///?action=download-manifest&url=%s'>",
-          TEST_PLIST_URL_WITH_CLASSIFIERS);
   }
 
   @Before
