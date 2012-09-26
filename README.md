@@ -27,7 +27,7 @@ This way the over-the-air deployment works on the CI server as well as from the 
 
 **Parameters in ota-service.xml:**
 * htmlTemplatePath: The absolute path to your custom HTML template.
-* googleAnalyticsId: Your googleAnalyticsId (can also be used as ID for other analytics services).
+* analyticsId: Your analyticsId (e.g. Google Analytics, Piwik,...).
 
 **HTML Template**
 You can use the following properties in your HTML (Velocity) template:
@@ -36,4 +36,4 @@ You can use the following properties in your HTML (Velocity) template:
 * $ipaUrl: The URL to the IPA file.
 * $plistUrl: The URL to the PLIST Service. The itms-services link for OTA deployment should use this URL.<br>
   E.g. &lt;a href='itms-services:///?action=download-manifest&url=$plistUrl'&gt;Install Over-the-air&lt;/a&gt;
-* $googleAnalyticsId: The Google Analytics ID (or other service ID) to be used in analytics scripts.
+* $analyticsId: The Analytics ID (e.g. Google Analytics, Piwik,...) to be used in analytics scripts.

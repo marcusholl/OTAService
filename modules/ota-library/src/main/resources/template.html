@@ -75,19 +75,6 @@
 			}
 		</style>
 		
-    <script type="text/javascript">
-		var _gaq = _gaq || [];
-  		_gaq.push(['_setAccount', '$googleAnalyticsId']);
-  		_gaq.push(['_setDomainName', 'none']);
-  		_gaq.push(['_trackPageview']);
-
-  		(function() {
-    		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
-	
 </head>
 <body>
 
@@ -103,10 +90,10 @@
   </tr>
   <tr>
     <td width='50%' align='center' style="padding:15px">
-	  <a class="button" href='itms-services:///?action=download-manifest&url=$plistUrl' onClick="_gaq.push(['_trackEvent', 'OTA', 'OTA', '$bundleIdentifier']);">Install Over-The-Air</a>
+	  <a class="button" href='itms-services:///?action=download-manifest&url=$plistUrl'>Install Over-The-Air</a>
 	</td>
     <td width='50%' align='center' style="padding:15px">
-	  <a class="button" href='$ipaUrl' onClick="_gaq.push(['_trackEvent', 'OTA', 'IPA', '$bundleIdentifier']);">Install via iTunes</a>
+	  <a class="button" href='$ipaUrl'>Install via iTunes</a>
     </td>
   </tr>
 </table>

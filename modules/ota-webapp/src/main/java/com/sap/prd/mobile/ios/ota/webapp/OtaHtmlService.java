@@ -24,7 +24,7 @@ import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.BUNDLE_VERSION;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.IPA_CLASSIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.OTA_CLASSIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.TITLE;
-import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.GOOGLE_ANALYTICS_ID;
+import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.ANALYTICS_ID;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,10 +79,10 @@ public class OtaHtmlService extends HttpServlet
             request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER)));
 
       String htmlTemplatePath = null;
-      String googleAnalyticsId = null;
+      String analyticsId = null;
       try {
         htmlTemplatePath = this.getServletContext().getInitParameter(HTML_TEMPLATE_PATH_KEY);
-        googleAnalyticsId = this.getServletContext().getInitParameter(GOOGLE_ANALYTICS_ID);
+        analyticsId = this.getServletContext().getInitParameter(ANALYTICS_ID);
       } catch(IllegalStateException e) {
         if(!e.getMessage().equals("ServletConfig has not been initialized")) throw e;
       }
@@ -90,7 +90,7 @@ public class OtaHtmlService extends HttpServlet
       PrintWriter writer = response.getWriter();
       OtaHtmlGenerator.getNewInstance(htmlTemplatePath).generate(writer,
             new Parameters(originalReferer, request.getParameter(TITLE), request.getParameter(BUNDLE_IDENTIFIER), plistUrl,
-                  request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER), googleAnalyticsId));
+                  request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER), analyticsId));
       writer.flush();
       writer.close();
     }

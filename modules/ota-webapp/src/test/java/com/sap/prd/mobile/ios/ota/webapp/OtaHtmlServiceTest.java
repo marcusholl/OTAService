@@ -19,7 +19,7 @@
  */
 package com.sap.prd.mobile.ios.ota.webapp;
 
-import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.GOOGLE_ANALYTICS_ID;
+import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.ANALYTICS_ID;
 import static com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator.BUNDLE_IDENTIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator.BUNDLE_VERSION;
 import static com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator.IPA_CLASSIFIER;
@@ -72,7 +72,7 @@ public class OtaHtmlServiceTest
   private static URL TEST_PLIST_URL_WITH_CLASSIFIERS;
   
   private static String TEST_ALTERNATIVE_TEMPLATE = new File("./src/test/resources/alternativeTemplate.html").getAbsolutePath();
-  private static String TEST_GOOGLE_ANALYTICS_ID = "TEST_GOOGLE_123";
+  private static String TEST_ANALYTICS_ID = "TEST_ANALYTICS_123";
 
 
   private final static String CHECK_TITLE = String.format("Install App: %s", TEST_TITLE);
@@ -111,7 +111,6 @@ public class OtaHtmlServiceTest
     assertContains(TEST_IPA_LINK, result);
     TestUtils.assertOtaLink(result, TEST_PLIST_URL.toString(), TEST_BUNDLEIDENTIFIER);
     assertContains(TEST_PLIST_URL.toExternalForm(), result);
-    assertContains("_gaq.push(['_setAccount', '$googleAnalyticsId']);", result); //not replaced because not configured here
   }
 
   @Test
@@ -124,7 +123,7 @@ public class OtaHtmlServiceTest
     HttpServletResponse response = mockResponse(writer);
     service = mockServletContextInitParameters(service, 
           HTML_TEMPLATE_PATH_KEY, TEST_ALTERNATIVE_TEMPLATE,
-          GOOGLE_ANALYTICS_ID, TEST_GOOGLE_ANALYTICS_ID
+          ANALYTICS_ID, TEST_ANALYTICS_ID
           );
     service.doPost(request, response);
 
@@ -133,7 +132,6 @@ public class OtaHtmlServiceTest
     assertContains(CHECK_TITLE, result);
     assertContains("<a href='itms-services:///?action=download-manifest&url="+TEST_PLIST_URL+"'>OTA</a>", result);
     assertContains("<a href='"+TEST_IPA_LINK+"'>IPA</a>", result);
-    assertContains("_gaq.push(['_setAccount', '"+TEST_GOOGLE_ANALYTICS_ID+"']);", result);
   }
   
   private OtaHtmlService mockServletContextInitParameters(OtaHtmlService service, String...keyValuePairs)
