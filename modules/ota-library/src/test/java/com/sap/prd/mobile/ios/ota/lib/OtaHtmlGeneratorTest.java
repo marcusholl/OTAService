@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,17 +46,18 @@ public class OtaHtmlGeneratorTest
   private final static String bundleVersion = "1.0.2";
   private final static String otaClassifier = "otaClassifier";
   private final static String ipaClassifier = "ipaClassifier";
-  private final static String analyticsId = "analyticsId";
 
   private static final String plistServiceUrl = "http://ota-server:8080/OTAService/PLIST";
 
+  private static HashMap<String, String> initParams = new HashMap<String, String>();
+  
   @Test
   public void testCorrectValues() throws IOException
   {
     URL plistURL = OtaPlistGenerator.generatePlistRequestUrl(plistServiceUrl, referer, title,
           bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
     String generated = OtaHtmlGenerator.getInstance().generate(
-          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, analyticsId));
+          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, initParams));
 
     assertContains(String.format("Install App: %s", title), generated);
     
@@ -73,7 +75,7 @@ public class OtaHtmlGeneratorTest
     URL plistURL = OtaPlistGenerator.generatePlistRequestUrl(plistServiceUrl, referer, title,
           bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
     String generated = OtaHtmlGenerator.getNewInstance("alternativeTemplate.html").generate(
-          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, analyticsId));
+          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, initParams));
     checkAlternativeResult(plistURL, generated);
   }
 
@@ -85,7 +87,7 @@ public class OtaHtmlGeneratorTest
     File templateFile = new File("./src/test/resources/alternativeTemplate.html");
     assertTrue("File does not exist at "+templateFile.getAbsolutePath(), templateFile.isFile());
     String generated = OtaHtmlGenerator.getNewInstance(templateFile.getAbsolutePath()).generate(
-          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, analyticsId));
+          new Parameters(referer, title, bundleIdentifier, plistURL, null, null, initParams));
     checkAlternativeResult(plistURL, generated);
   }
 

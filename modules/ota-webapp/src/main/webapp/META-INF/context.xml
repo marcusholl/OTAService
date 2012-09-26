@@ -19,6 +19,5 @@
 <Context>
   
   <Parameter name="htmlTemplatePath" value="template.html" override="false"/>
-  <Parameter name="googleAnalyticsId" value="" override="false"/>
 
 </Context>

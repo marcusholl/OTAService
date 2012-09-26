@@ -42,7 +42,6 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
   public static final String BUNDLE_VERSION = "bundleVersion";
   public static final String IPA_CLASSIFIER = "ipaClassifier";
   public static final String OTA_CLASSIFIER = "otaClassifier";
-  public static final String GOOGLE_ANALYTICS_ID = "googleAnalyticsId";
 
   /**
    * Parameters required for the <code>OtaBuildHtmlGenerator</code>.
@@ -81,7 +80,6 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
       mappings.put(BUNDLE_VERSION, bundleVersion);
       mappings.put(IPA_CLASSIFIER, ipaClassifier);
       mappings.put(OTA_CLASSIFIER, otaClassifier);
-      mappings.put(GOOGLE_ANALYTICS_ID, googleAnalyticsId==null?"":googleAnalyticsId);
     }
   }
 

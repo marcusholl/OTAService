@@ -24,11 +24,12 @@ import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.BUNDLE_VERSION;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.IPA_CLASSIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.OTA_CLASSIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.TITLE;
-import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.ANALYTICS_ID;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,8 +39,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator;
-import com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator;
 import com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.Parameters;
+import com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator;
 
 @SuppressWarnings("serial")
 public class OtaHtmlService extends HttpServlet
@@ -78,19 +79,13 @@ public class OtaHtmlService extends HttpServlet
               .getParameter(BUNDLE_IDENTIFIER), request.getParameter(BUNDLE_VERSION),
             request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER)));
 
-      String htmlTemplatePath = null;
-      String analyticsId = null;
-      try {
-        htmlTemplatePath = this.getServletContext().getInitParameter(HTML_TEMPLATE_PATH_KEY);
-        analyticsId = this.getServletContext().getInitParameter(ANALYTICS_ID);
-      } catch(IllegalStateException e) {
-        if(!e.getMessage().equals("ServletConfig has not been initialized")) throw e;
-      }
+      HashMap<String, String> initParameters = getInitParameters();
+      String htmlTemplatePath =initParameters.get(HTML_TEMPLATE_PATH_KEY);
       
       PrintWriter writer = response.getWriter();
       OtaHtmlGenerator.getNewInstance(htmlTemplatePath).generate(writer,
             new Parameters(originalReferer, request.getParameter(TITLE), request.getParameter(BUNDLE_IDENTIFIER), plistUrl,
-                  request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER), analyticsId));
+                  request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER), initParameters));
       writer.flush();
       writer.close();
     }
@@ -98,6 +93,21 @@ public class OtaHtmlService extends HttpServlet
       LOG.log(Level.SEVERE, String.format(
             "Exception while processing GET request from '%s'", request.getRemoteAddr()), e);
     }
+  }
+
+  private HashMap<String,String> getInitParameters()
+  {
+    HashMap<String, String> map = new HashMap<String, String>();
+    try {
+      Enumeration<String> initParameterNames = this.getServletContext().getInitParameterNames();
+      while(initParameterNames.hasMoreElements()) {
+        String name = initParameterNames.nextElement();
+        map.put(name,  this.getServletContext().getInitParameter(name));
+      }
+    } catch(IllegalStateException e) {
+      if(!e.getMessage().equals("ServletConfig has not been initialized")) throw e;
+    }
+    return map;
   }
 
   String getPlistServiceUrl(HttpServletRequest request)

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -42,7 +43,6 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
   public static final String BUNDLE_VERSION = "bundleVersion";
   public static final String IPA_CLASSIFIER = "ipaClassifier";
   public static final String OTA_CLASSIFIER = "otaClassifier";
-  public static final String ANALYTICS_ID = "analyticsId";
   
   /**
    * Parameters required for the <code>OtaHtmlGenerator</code>.
@@ -65,16 +65,20 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
      * @throws MalformedURLException
      */
     public Parameters(String referer, String title, String bundleIdentifier, URL plistUrl, String ipaClassifier,
-          String otaClassifier, String analyticsId)
+          String otaClassifier, HashMap<String, String> initParams)
           throws MalformedURLException
     {
       super();
       URL ipaUrl = LibUtils.generateDirectIpaUrl(referer, ipaClassifier, otaClassifier);
+      if(initParams != null) {
+        for(String name : initParams.keySet()) {
+          mappings.put(name, initParams.get(name));
+        }
+      }
       mappings.put(IPA_URL, ipaUrl.toExternalForm());
       mappings.put(BUNDLE_IDENTIFIER, bundleIdentifier);
       mappings.put(PLIST_URL, plistUrl.toExternalForm());
       mappings.put(TITLE, title);
-      mappings.put(ANALYTICS_ID, analyticsId);
     }
   }
 

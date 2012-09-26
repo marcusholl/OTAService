@@ -19,7 +19,6 @@
  */
 package com.sap.prd.mobile.ios.ota.webapp;
 
-import static com.sap.prd.mobile.ios.ota.lib.OtaHtmlGenerator.ANALYTICS_ID;
 import static com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator.BUNDLE_IDENTIFIER;
 import static com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator.BUNDLE_VERSION;
 import static com.sap.prd.mobile.ios.ota.lib.OtaPlistGenerator.IPA_CLASSIFIER;
@@ -37,6 +36,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -72,7 +74,6 @@ public class OtaHtmlServiceTest
   private static URL TEST_PLIST_URL_WITH_CLASSIFIERS;
   
   private static String TEST_ALTERNATIVE_TEMPLATE = new File("./src/test/resources/alternativeTemplate.html").getAbsolutePath();
-  private static String TEST_ANALYTICS_ID = "TEST_ANALYTICS_123";
 
 
   private final static String CHECK_TITLE = String.format("Install App: %s", TEST_TITLE);
@@ -122,9 +123,7 @@ public class OtaHtmlServiceTest
     HttpServletRequest request = mockRequest();
     HttpServletResponse response = mockResponse(writer);
     service = mockServletContextInitParameters(service, 
-          HTML_TEMPLATE_PATH_KEY, TEST_ALTERNATIVE_TEMPLATE,
-          ANALYTICS_ID, TEST_ANALYTICS_ID
-          );
+          HTML_TEMPLATE_PATH_KEY, TEST_ALTERNATIVE_TEMPLATE);
     service.doPost(request, response);
 
     String result = writer.getBuffer().toString();
@@ -143,13 +142,16 @@ public class OtaHtmlServiceTest
 
     ServletConfig configMock = mock(ServletConfig.class);
     when(serviceSpy.getServletConfig()).thenReturn(configMock);
-    
+
+    List<String> keys = new ArrayList<String>();
     ServletContext contextMock = mock(ServletContext.class);
     for(int i = 0; i < keyValuePairs.length; i+=2) {
       String key = keyValuePairs[i];
+      keys.add(key);
       String value = keyValuePairs[i+1];
       when(contextMock.getInitParameter(key)).thenReturn(value);
     }
+    when(contextMock.getInitParameterNames()).thenReturn(Collections.enumeration(keys));
     when(serviceSpy.getServletContext()).thenReturn(contextMock);
     return serviceSpy;
   }
