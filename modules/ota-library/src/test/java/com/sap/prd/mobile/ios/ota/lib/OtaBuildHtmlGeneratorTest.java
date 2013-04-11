@@ -63,7 +63,7 @@ public class OtaBuildHtmlGeneratorTest
     assertContains(IPA_CLASSIFIER + "=" + ipaClassifier, generated);
     assertContains(OTA_CLASSIFIER + "=" + otaClassifier, generated);
     assertContains(
-          "<iframe src=\""
+          "<iframe id=\"iframe\" src=\""
                 + HTML_SERVICE
                 + "?title=MyApp&bundleIdentifier=com.sap.xyz.MyApp&bundleVersion=1.0.2&ipaClassifier=ipaClassifier&otaClassifier=otaClassifier\"",
           generated);
