@@ -44,7 +44,8 @@ import com.sap.prd.mobile.ios.ota.lib.VelocityBase.IParameters;
 public abstract class VelocityBase<P extends IParameters>
 {
 
-  protected Template template;
+  protected final Template template;
+  protected final String templateName;
 
   protected VelocityBase(String templateName)
   {
@@ -57,9 +58,11 @@ public abstract class VelocityBase<P extends IParameters>
     if (templateFile.isFile()) {
       ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, templateFile.getParent());
       template = ve.getTemplate(templateFile.getName());
+      this.templateName = template==null ? null : templateFile.getAbsolutePath();
     }
     else {
       template = ve.getTemplate(templateName);
+      this.templateName = template==null ? null : templateName;
     }
     if(template == null) throw new ResourceNotFoundException("Neither file nor resource found for '"+templateName+"'");
   }
@@ -109,6 +112,11 @@ public abstract class VelocityBase<P extends IParameters>
       return mappings;
     }
 
+  }
+  
+  public String getTemplateName()
+  {
+    return templateName;
   }
 
 }

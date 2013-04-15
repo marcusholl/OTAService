@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -65,7 +65,7 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
      * @throws MalformedURLException
      */
     public Parameters(String referer, String title, String bundleIdentifier, URL plistUrl, String ipaClassifier,
-          String otaClassifier, HashMap<String, String> initParams)
+          String otaClassifier, Map<String, String> initParams)
           throws MalformedURLException
     {
       super();

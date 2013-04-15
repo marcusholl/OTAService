@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 import com.sap.prd.mobile.ios.ota.lib.OtaBuildHtmlGenerator.Parameters;
 
@@ -67,7 +68,7 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
      * @throws MalformedURLException
      */
     public Parameters(URL htmlServiceUrl, String title, String bundleIdentifier, String bundleVersion,
-          String ipaClassifier, String otaClassifier, String googleAnalyticsId)
+          String ipaClassifier, String otaClassifier, Map<String, String> initParams)
           throws MalformedURLException
     {
       super();
@@ -80,6 +81,11 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
       mappings.put(BUNDLE_VERSION, bundleVersion);
       mappings.put(IPA_CLASSIFIER, ipaClassifier);
       mappings.put(OTA_CLASSIFIER, otaClassifier);
+      if(initParams != null) {
+        for(String name : initParams.keySet()) {
+          mappings.put(name, initParams.get(name));
+        }
+      }
     }
   }
 

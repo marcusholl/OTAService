@@ -85,6 +85,7 @@
         <input type="hidden" name="bundleVersion" value="$bundleVersion">
         <input type="hidden" name="ipaClassifier" value="$ipaClassifier">
         <input type="hidden" name="otaClassifier" value="$otaClassifier">
+        <input type="hidden" id="formReferer" name="Referer" value="">
         <input type="submit">   
     </form>
 </iframe>
@@ -93,6 +94,8 @@
 	var thisUrl = document.location;
 	var iframe = document.getElementById("iframe");
 	iframe.src=iframe.src+"&Referer="+encodeURIComponent(thisUrl);
+	var formReferer = document.getElementById("formReferer");
+	formReferer.value=encodeURIComponent(thisUrl);
 </script> 
 
 </body>
