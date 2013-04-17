@@ -63,8 +63,8 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
      *          used.
      * @param otaClassifier
      *          The classifier used in the OTA HTML artifact. If null no classifier will be used.
-     * @param googleAnalyticsId
-     *          The Google Analytics Account ID. Can be null.
+     * @param initParams
+     *          A map containing additional parameters.
      * @throws MalformedURLException
      */
     public Parameters(URL htmlServiceUrl, String title, String bundleIdentifier, String bundleVersion,
