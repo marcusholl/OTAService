@@ -116,17 +116,4 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
     if(template == null || template.trim().length() == 0) return DEFAULT_TEMPLATE;
     return template;
   }
-
-  @Override
-  public synchronized String generate(Parameters parameters) throws IOException
-  {
-    return super.generate(parameters);
-  }
-
-  @Override
-  public synchronized void generate(PrintWriter writer, Parameters parameters) throws IOException
-  {
-    super.generate(writer, parameters);
-  }
-
 }
