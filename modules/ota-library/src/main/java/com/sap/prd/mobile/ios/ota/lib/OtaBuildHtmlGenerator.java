@@ -20,8 +20,6 @@
 package com.sap.prd.mobile.ios.ota.lib;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -115,18 +113,6 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
   {
     if(template == null || template.trim().length() == 0) return DEFAULT_TEMPLATE;
     return template;
-  }
-
-  @Override
-  public synchronized String generate(Parameters parameters) throws IOException
-  {
-    return super.generate(parameters);
-  }
-
-  @Override
-  public synchronized void generate(PrintWriter writer, Parameters parameters) throws IOException
-  {
-    super.generate(writer, parameters);
   }
 
 }
