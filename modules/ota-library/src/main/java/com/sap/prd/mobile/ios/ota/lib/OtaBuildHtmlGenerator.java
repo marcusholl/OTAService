@@ -22,7 +22,10 @@ package com.sap.prd.mobile.ios.ota.lib;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.sap.prd.mobile.ios.ota.lib.OtaBuildHtmlGenerator.Parameters;
 
@@ -89,19 +92,25 @@ public class OtaBuildHtmlGenerator extends VelocityBase<Parameters>
 
 
   static final String DEFAULT_TEMPLATE = "buildTemplate.html";
-  private static OtaBuildHtmlGenerator instance = null;
+  private static Map<String, OtaBuildHtmlGenerator> instances = new HashMap<String, OtaBuildHtmlGenerator>();
 
-  public static synchronized OtaBuildHtmlGenerator getInstance()
+  public static OtaBuildHtmlGenerator getInstance() {
+    return getInstance(null);
+  }
+  
+  public static synchronized OtaBuildHtmlGenerator getInstance(String template)
   {
-    if (instance == null) {
-      instance = new OtaBuildHtmlGenerator(null);
+    if(StringUtils.isEmpty(template)) {
+      template = DEFAULT_TEMPLATE;
+    }
+    OtaBuildHtmlGenerator instance;
+    if (!instances.keySet().contains(template)) {
+      instance = new OtaBuildHtmlGenerator(template);
+      instances.put(template, instance);
+    } else {
+      instance = instances.get(template);
     }
     return instance;
-  }
-
-  public static synchronized OtaBuildHtmlGenerator getNewInstance(String template) throws FileNotFoundException
-  {
-    return new OtaBuildHtmlGenerator(template);
   }
 
   private OtaBuildHtmlGenerator(String template)

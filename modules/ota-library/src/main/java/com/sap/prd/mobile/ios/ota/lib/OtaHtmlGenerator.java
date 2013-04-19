@@ -22,6 +22,7 @@ package com.sap.prd.mobile.ios.ota.lib;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -81,30 +82,33 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
   }
 
   static final String DEFAULT_TEMPLATE = "template.html";
-  private static OtaHtmlGenerator instance = null;
+  private static Map<String, OtaHtmlGenerator> instances = new HashMap<String, OtaHtmlGenerator>();
 
-  public static synchronized OtaHtmlGenerator getInstance()
-  {
-    if (instance == null) {
-      instance = new OtaHtmlGenerator(null);
-    }
-    return instance;
+  public static OtaHtmlGenerator getInstance() {
+    return getInstance(null);
   }
 
-  public static synchronized OtaHtmlGenerator getNewInstance(String template) throws FileNotFoundException
+  public static synchronized OtaHtmlGenerator getInstance(String template)
   {
-    return new OtaHtmlGenerator(template);
+    if(StringUtils.isEmpty(template)) {
+      template = DEFAULT_TEMPLATE;
+    }
+    
+    OtaHtmlGenerator instance;
+
+    if (!instances.keySet().contains(template)) {
+      instance = new OtaHtmlGenerator(template);
+      instances.put(template, instance);
+    } else {
+      instance = instances.get(template);
+    }
+
+    return instance;
   }
 
   private OtaHtmlGenerator(String template)
   {
-    super(validateTemplate(template));
-  }
-
-  private static String validateTemplate(String template)
-  {
-    if(template == null || template.trim().length() == 0) return DEFAULT_TEMPLATE;
-    return template;
+    super(template);
   }
 
   /**

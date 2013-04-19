@@ -83,7 +83,7 @@ public class OtaHtmlService extends HttpServlet
       String htmlTemplatePath =initParameters.get(HTML_TEMPLATE_PATH_KEY);
       
       PrintWriter writer = response.getWriter();
-      OtaHtmlGenerator.getNewInstance(htmlTemplatePath).generate(writer,
+      OtaHtmlGenerator.getInstance(htmlTemplatePath).generate(writer,
             new Parameters(originalReferer, request.getParameter(TITLE), request.getParameter(BUNDLE_IDENTIFIER), plistUrl,
                   request.getParameter(IPA_CLASSIFIER), request.getParameter(OTA_CLASSIFIER), initParameters));
       writer.flush();

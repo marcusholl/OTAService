@@ -74,7 +74,7 @@ public class OtaHtmlGeneratorTest
   {
     URL plistURL = OtaPlistGenerator.generatePlistRequestUrl(plistServiceUrl, referer, title,
           bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
-    String generated = OtaHtmlGenerator.getNewInstance("alternativeTemplate.html").generate(
+    String generated = OtaHtmlGenerator.getInstance("alternativeTemplate.html").generate(
           new Parameters(referer, title, bundleIdentifier, plistURL, null, null, initParams));
     checkAlternativeResult(plistURL, generated);
   }
@@ -86,7 +86,7 @@ public class OtaHtmlGeneratorTest
           bundleIdentifier, bundleVersion, ipaClassifier, otaClassifier);
     File templateFile = new File("./src/test/resources/alternativeTemplate.html");
     assertTrue("File does not exist at "+templateFile.getAbsolutePath(), templateFile.isFile());
-    String generated = OtaHtmlGenerator.getNewInstance(templateFile.getAbsolutePath()).generate(
+    String generated = OtaHtmlGenerator.getInstance(templateFile.getAbsolutePath()).generate(
           new Parameters(referer, title, bundleIdentifier, plistURL, null, null, initParams));
     checkAlternativeResult(plistURL, generated);
   }
@@ -131,42 +131,42 @@ public class OtaHtmlGeneratorTest
   public void getNewInstanceCorrectResource() throws FileNotFoundException
   {
     assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE,
-          OtaHtmlGenerator.getNewInstance(OtaHtmlGenerator.DEFAULT_TEMPLATE).template.getName());
+          OtaHtmlGenerator.getInstance(OtaHtmlGenerator.DEFAULT_TEMPLATE).template.getName());
   }
 
   @Test
   public void getNewInstanceNull() throws FileNotFoundException
   {
     assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE,
-          OtaHtmlGenerator.getNewInstance(null).template.getName());
+          OtaHtmlGenerator.getInstance(null).template.getName());
   }
 
   @Test
   public void getNewInstanceEmpty() throws FileNotFoundException
   {
     assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE, 
-          OtaHtmlGenerator.getNewInstance("").template.getName());
+          OtaHtmlGenerator.getInstance("").template.getName());
   }
 
   @Test(expected = ResourceNotFoundException.class)
   public void getNewInstanceWrongResource() throws FileNotFoundException
   {
     assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE,
-          OtaHtmlGenerator.getNewInstance("doesnotexist.htm").template.getName());
+          OtaHtmlGenerator.getInstance("doesnotexist.htm").template.getName());
   }
 
   @Test
   public void getNewInstanceCorrectFile() throws FileNotFoundException
   {
     assertEquals("alternativeTemplate.html",
-          OtaHtmlGenerator.getNewInstance(new File("./src/test/resources/alternativeTemplate.html").getAbsolutePath()).template.getName());
+          OtaHtmlGenerator.getInstance(new File("./src/test/resources/alternativeTemplate.html").getAbsolutePath()).template.getName());
   }
 
   @Test(expected = ResourceNotFoundException.class)
   public void getNewInstanceWrongFile() throws FileNotFoundException
   {
     assertEquals(OtaHtmlGenerator.DEFAULT_TEMPLATE,
-          OtaHtmlGenerator.getNewInstance(new File("./doesnotexist.htm").getAbsolutePath()).template.getName());
+          OtaHtmlGenerator.getInstance(new File("./doesnotexist.htm").getAbsolutePath()).template.getName());
   }
   
 }
