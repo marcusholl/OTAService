@@ -19,7 +19,6 @@
  */
 package com.sap.prd.mobile.ios.ota.lib;
 
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -91,7 +90,7 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
     if(StringUtils.isEmpty(template)) {
       template = DEFAULT_TEMPLATE;
     }
-    
+
     OtaHtmlGenerator instance;
 
     if (!instances.keySet().contains(template)) {
