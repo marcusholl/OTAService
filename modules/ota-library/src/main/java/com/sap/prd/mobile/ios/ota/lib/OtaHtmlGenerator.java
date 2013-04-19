@@ -70,9 +70,7 @@ public class OtaHtmlGenerator extends VelocityBase<Parameters>
       super();
       URL ipaUrl = LibUtils.generateDirectIpaUrl(referer, ipaClassifier, otaClassifier);
       if(initParams != null) {
-        for(String name : initParams.keySet()) {
-          mappings.put(name, initParams.get(name));
-        }
+        mappings.putAll(initParams);
       }
       mappings.put(IPA_URL, ipaUrl.toExternalForm());
       mappings.put(BUNDLE_IDENTIFIER, bundleIdentifier);
