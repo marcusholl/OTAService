@@ -111,9 +111,8 @@ public class OtaBuildHtmlGeneratorTest
   public void testProject() throws MalformedURLException, IOException
   {
     URL htmlServiceUrl = new URL(HTML_SERVICE);
-    String generated = OtaBuildHtmlGenerator.getInstance().generate(
+    OtaBuildHtmlGenerator.getInstance().generate(
           new Parameters(htmlServiceUrl, "MyApp", "com.sap.tip.production.ios.ota.test", "1.0", "Production-iphoneos", "OTA-Installer", null));
-    System.out.println(generated);
   }
 
   public void getNewInstanceCorrectResource() throws FileNotFoundException
