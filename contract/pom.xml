@@ -14,7 +14,7 @@
   <artifactId>contract</artifactId>
   <packaging>pom</packaging>
   <name>Reuse Contract</name>
-  
+    
  <dependencyManagement>
   <dependencies>
 
@@ -26,6 +26,5 @@
 
   </dependencies>
  </dependencyManagement>
-
   
 </project>
